@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "python manage.py runserver 0.0.0.0:8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./db/:/root/db/
+    ports:
+        - '9000:9000'
+    restart: unless-stopped
+
+volumes:
+  db: {}
